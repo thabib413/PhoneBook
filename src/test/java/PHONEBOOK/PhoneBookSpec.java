@@ -1,7 +1,5 @@
 package PHONEBOOK;
 
-import org.junit.Assert;
-import org.junit.Assert.*;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -13,32 +11,57 @@ import static org.junit.Assert.*;
 public class PhoneBookSpec {
 
     @Test
-    public void lookingUpName(){
+    public void lookingUpName() {
         PhoneBook testPhoneBook = new PhoneBook();
-        String expectedPerson = "testname";
-        Person actualPerson = testPhoneBook.lookUpPerson(expectedPerson);
-        assertNull(actualPerson);
-    }
-    @Test
-    public void addingPerson(){
         Person testPerson = new Person();
-        PhoneBook testPhoneBook = new PhoneBook();
-        String expectedPerson = "testname";
-        String actualPerson = testPhoneBook.lookUpPerson(expectedPerson).getName();
-        assertTrue(expectedPerson.equals(actualPerson));
+        testPerson.addToNumberList("302-543-7654");
+        testPhoneBook.addPerson("test name", testPerson.getNumberList());
+        String expectedNumbers = "302-543-7654\n";
+        String actualNumbers = testPhoneBook.lookUpPerson("test name");
+        assertEquals(expectedNumbers, actualNumbers);
     }
+
     @Test
-    public void removingPerson(){
-        PhoneBook testPhonebook = new PhoneBook();
-        String name = "testname";
-        Person person = new Person();
-
-        testPhonebook.addPerson(name, person);
-        Person resultBeforeRemoval = testPhonebook.lookUpPerson(name);
-        testPhonebook.removePerson(name);
-        Person resutAfterRemoval = testPhonebook.lookUpPerson(name);
-        assertNull(resutAfterRemoval);
-        assertNotEquals(resultBeforeRemoval, resutAfterRemoval);
-
+    public void removingEntry() {
+        PhoneBook testPhoneBook = new PhoneBook();
+        Person testPerson = new Person();
+        testPerson.addToNumberList("302-543-7654");
+        testPhoneBook.addPerson("test name", testPerson.getNumberList());
+        int expectedValue = 1;
+        int actualValue = testPhoneBook.getSizeOfPhoneBook();
+        testPhoneBook.removePerson("test name");
+        int expectedValue2 = 0;
+        int actualValue2 = testPhoneBook.getSizeOfPhoneBook();
+        assertEquals(expectedValue2, actualValue2);
     }
+
+    @Test
+    public void reverseLookUp(){
+        PhoneBook testPhoneBook = new PhoneBook();
+        Person testPerson = new Person();
+        testPerson.addToNumberList("302-543-7654");
+        testPhoneBook.addPerson("test name", testPerson.getNumberList());
+        String expectedNumber = "test name";
+        String actualNumber = testPhoneBook.reverseLookUp("302-543-7654");
+        assertEquals(expectedNumber, actualNumber);
+    }
+
+
+
+    @Test
+    public void removeNumber(){
+        PhoneBook testPhoneBook = new PhoneBook();
+        Person testPerson = new Person();
+        testPerson.addToNumberList("302-543-7654");
+        testPhoneBook.addPerson("test name", testPerson.getNumberList());
+        int preRemoveExpected = 1;
+        int preRemoveActual = testPerson.getSizeNumberList();
+        testPhoneBook.removeNumber("302-543-7654");
+        int postRemoveExpected = 0;
+        int postActual = testPerson.getSizeNumberList();
+        assertEquals(preRemoveActual, preRemoveExpected);
+        assertEquals(postRemoveExpected, postActual );
+        assertFalse(preRemoveActual == postActual);
+    }
+
 }
